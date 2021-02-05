@@ -107,6 +107,7 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha06"
 
     implementation 'com.google.android.material:material:1.2.1'
+    implementation "com.google.android.material:compose-theme-adapter:1.0.0-alpha11"
 
     implementation "com.google.dagger:hilt-android:$rootProject.hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$rootProject.hilt_version"
