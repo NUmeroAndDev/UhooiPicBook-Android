@@ -11,17 +11,17 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.ImageLoader
-import coil.load
 import coil.request.Disposable
 import coil.request.ImageRequest
+import com.google.android.material.composethemeadapter.MdcTheme
 import com.theuhooi.uhooipicbook.R
-import kotlinx.android.synthetic.main.fragment_monster_detail.view.*
 import java.io.File
 import java.io.FileOutputStream
 
@@ -42,22 +42,23 @@ class MonsterDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_monster_detail, container, false)
-    }
+        return ComposeView(inflater.context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        view.icon_imageview.load(this.args.monster.iconUrlString)
-        view.dancing_imageview.load(this.args.monster.dancingUrlString)
-        view.dancing_imageview.setOnClickListener {
-            val action =
-                MonsterDetailFragmentDirections.actionDetailToDancing(this.args.monster.dancingUrlString)
-            findNavController().navigate(action)
+            setContent {
+                MdcTheme {
+                    MonsterDetailScreen(
+                        monsterItem = args.monster,
+                        onBack = {
+                            findNavController().popBackStack()
+                        }
+                    )
+                }
+            }
         }
-        view.name_textview.text = this.args.monster.name
-        view.description_textview.text = unescapeNewline(this.args.monster.description)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
