@@ -7,8 +7,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
@@ -50,10 +48,14 @@ class MonsterDetailFragment : Fragment() {
 
             setContent {
                 MdcTheme {
+                    // TODO impl image preview screen
                     MonsterDetailScreen(
                         monsterItem = args.monster,
                         onBack = {
                             findNavController().popBackStack()
+                        },
+                        onShare = {
+                            shareMonster()
                         }
                     )
                 }
@@ -61,20 +63,8 @@ class MonsterDetailFragment : Fragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-
-        inflater.inflate(R.menu.menu_monster_detail, menu)
-        val shareMenuItem = menu.findItem(R.id.share_menu_item)
-        shareMenuItem.setOnMenuItemClickListener {
-            shareMonster()
-            true
-        }
-    }
-
-    override fun onDestroyOptionsMenu() {
-        super.onDestroyOptionsMenu()
-
+    override fun onDestroyView() {
+        super.onDestroyView()
         this.disposable?.dispose()
     }
 

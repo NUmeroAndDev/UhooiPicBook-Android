@@ -19,6 +19,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.ui.Alignment
@@ -37,10 +38,10 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 fun MonsterDetailScreen(
     monsterItem: MonsterItem,
     onBack: () -> Unit,
+    onShare: () -> Unit,
 ) {
     Scaffold(
         topBar = {
-            // TODO impl menu item
             val bgColor = if (monsterItem.baseColorCode.isEmpty()) {
                 MaterialTheme.colors.primary
             } else {
@@ -54,6 +55,14 @@ fun MonsterDetailScreen(
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.navigate_up_description),
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onShare) {
+                        Icon(
+                            imageVector = Icons.Filled.Share,
+                            contentDescription = stringResource(id = R.string.share_menu_item_title),
                         )
                     }
                 }
