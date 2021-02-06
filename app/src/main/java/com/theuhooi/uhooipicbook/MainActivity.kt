@@ -1,12 +1,9 @@
 package com.theuhooi.uhooipicbook
 
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.color.MaterialColors
 import com.theuhooi.uhooipicbook.extensions.IntColorInterface
 import com.theuhooi.uhooipicbook.modules.monsterlist.MonsterListFragment
@@ -24,30 +21,17 @@ class MainActivity : AppCompatActivity(), MonsterListFragment.OnListFragmentInte
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        configureToolBar()
+        configureStatusBar()
     }
-
-    override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
 
     // endregion
 
     // region Other Private Methods
 
-    private fun configureToolBar() {
-        setSupportActionBar(findViewById(R.id.toolbar))
-
+    private fun configureStatusBar() {
         val navController = findNavController(R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.monster_list_fragment) {
-                this.supportActionBar?.setBackgroundDrawable(
-                    ColorDrawable(
-                        MaterialColors.getColor(
-                            this,
-                            R.attr.colorPrimary,
-                            "colorPrimary is not set in the current theme"
-                        )
-                    )
-                )
                 this.window.statusBarColor = MaterialColors.getColor(
                     this,
                     R.attr.colorPrimaryVariant,
@@ -55,8 +39,6 @@ class MainActivity : AppCompatActivity(), MonsterListFragment.OnListFragmentInte
                 )
             }
         }
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     // endregion
@@ -69,7 +51,6 @@ class MainActivity : AppCompatActivity(), MonsterListFragment.OnListFragmentInte
 
         if (item.baseColorCode.isNotEmpty()) {
             val actionBarColor = Color.parseColor(item.baseColorCode)
-            this.supportActionBar?.setBackgroundDrawable(ColorDrawable(actionBarColor))
             this.window.statusBarColor = actionBarColor.actionBarColorToStatusBarColor
         }
     }
