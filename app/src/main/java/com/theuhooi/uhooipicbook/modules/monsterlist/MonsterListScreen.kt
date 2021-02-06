@@ -9,23 +9,35 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.foundation.layout.preferredWidth
+import androidx.compose.foundation.layout.preferredWidthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.AmbientTextStyle
 import androidx.compose.material.Card
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.theuhooi.uhooipicbook.R
 import com.theuhooi.uhooipicbook.modules.monsterlist.entities.MonsterItem
 import com.theuhooi.uhooipicbook.modules.monsterlist.viewmodels.MonsterListViewModel
 import dev.chrisbanes.accompanist.coil.CoilImage
@@ -34,14 +46,19 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 fun MonsterListScreen(
     viewModel: MonsterListViewModel,
     onClickItem: (item: MonsterItem) -> Unit,
+    onNavigateLicenses: () -> Unit
 ) {
     val monsterItemList by viewModel.monsters.observeAsState(emptyList())
     Scaffold(
         topBar = {
-            // TODO impl menu item
             TopAppBar(
                 title = { },
-                backgroundColor = MaterialTheme.colors.primary
+                backgroundColor = MaterialTheme.colors.primary,
+                actions = {
+                    MonsterListPopupMenuAction(
+                        onClickLicensesItem = onNavigateLicenses
+                    )
+                }
             )
         },
         bodyContent = { innerPadding ->
@@ -52,6 +69,43 @@ fun MonsterListScreen(
                 onClickItem = onClickItem
             )
         }
+    )
+}
+
+
+@Composable
+fun MonsterListPopupMenuAction(
+    onClickLicensesItem: () -> Unit,
+) {
+    var isShownDropdown by remember { mutableStateOf(false) }
+    DropdownMenu(
+        toggle = {
+            IconButton(
+                onClick = {
+                    isShownDropdown = true
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.MoreVert,
+                    contentDescription = stringResource(id = R.string.more_action_description),
+                )
+            }
+        },
+        expanded = isShownDropdown,
+        onDismissRequest = {
+            isShownDropdown = false
+        },
+        dropdownContent = {
+            DropdownMenuItem(
+                onClick = {
+                    onClickLicensesItem()
+                    isShownDropdown = false
+                }
+            ) {
+                Text(text = stringResource(id = R.string.licenses_menu_item_title))
+            }
+        },
+        dropdownModifier = Modifier.preferredWidthIn(min = 112.dp)
     )
 }
 

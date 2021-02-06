@@ -3,9 +3,6 @@ package com.theuhooi.uhooipicbook.modules.monsterlist
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
@@ -13,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.theuhooi.uhooipicbook.R
 import com.theuhooi.uhooipicbook.modules.monsterlist.entities.MonsterItem
 import com.theuhooi.uhooipicbook.modules.monsterlist.viewmodels.MonsterListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,6 +43,9 @@ class MonsterListFragment : Fragment() {
                     viewModel = viewModel,
                     onClickItem = {
                         listener?.onListFragmentInteraction(it)
+                    },
+                    onNavigateLicenses = {
+                        findNavController().navigate(MonsterListFragmentDirections.actionListToLicenses())
                     }
                 )
             }
@@ -68,22 +67,6 @@ class MonsterListFragment : Fragment() {
 
         this.listener = null
     }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_monster_list, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.licenses_menu_item -> {
-                findNavController().navigate(MonsterListFragmentDirections.actionListToLicenses())
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     // endregion
 
     // region Interfaces
