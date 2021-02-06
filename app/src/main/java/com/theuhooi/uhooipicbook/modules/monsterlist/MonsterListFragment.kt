@@ -43,7 +43,12 @@ class MonsterListFragment : Fragment() {
 
         setContent {
             MdcTheme {
-                MonsterListScreen(viewModel = viewModel)
+                MonsterListScreen(
+                    viewModel = viewModel,
+                    onClickItem = {
+                        listener?.onListFragmentInteraction(it)
+                    }
+                )
             }
         }
     }

@@ -32,7 +32,8 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun MonsterListScreen(
-    viewModel: MonsterListViewModel
+    viewModel: MonsterListViewModel,
+    onClickItem: (item: MonsterItem) -> Unit,
 ) {
     val monsterItemList by viewModel.monsters.observeAsState(emptyList())
     Scaffold(
@@ -47,7 +48,8 @@ fun MonsterListScreen(
             val modifier = Modifier.padding(innerPadding)
             MonsterListContent(
                 modifier = modifier,
-                monsterItemList = monsterItemList
+                monsterItemList = monsterItemList,
+                onClickItem = onClickItem
             )
         }
     )
@@ -56,14 +58,18 @@ fun MonsterListScreen(
 @Composable
 fun MonsterListContent(
     modifier: Modifier = Modifier,
-    monsterItemList: List<MonsterItem>
+    monsterItemList: List<MonsterItem>,
+    onClickItem: (item: MonsterItem) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(16.dp)
     ) {
         itemsIndexed(monsterItemList) { index, item ->
-            MonsterListItem(monsterItem = item)
+            MonsterListItem(
+                monsterItem = item,
+                onClickItem = onClickItem
+            )
             if (index < monsterItemList.lastIndex) {
                 Spacer(modifier = Modifier.preferredHeight(16.dp))
             }
@@ -75,10 +81,11 @@ fun MonsterListContent(
 fun MonsterListItem(
     modifier: Modifier = Modifier,
     monsterItem: MonsterItem,
+    onClickItem: (item: MonsterItem) -> Unit,
 ) {
     Card(
         modifier = modifier.clickable {
-            // TODO navigate to detail
+            onClickItem(monsterItem)
         }
     ) {
         Row(
@@ -111,6 +118,7 @@ fun PreviewMonsterListItem() {
         monsterItem = MonsterItem(
             name = "uhooi",
             iconUrlString = "https://placehold.jp/150x150.png"
-        )
+        ),
+        onClickItem = {}
     )
 }
