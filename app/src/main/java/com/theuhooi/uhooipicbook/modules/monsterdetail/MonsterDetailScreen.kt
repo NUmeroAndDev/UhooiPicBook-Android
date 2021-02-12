@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.AmbientContentAlpha
-import androidx.compose.material.AmbientTextStyle
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -120,20 +120,20 @@ fun MonsterDetail(
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = monsterItem.name,
-            style = AmbientTextStyle.current.copy(
+            style = LocalTextStyle.current.copy(
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colors.onBackground
             )
         )
         Spacer(modifier = Modifier.preferredHeight(64.dp))
-        Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+        Providers(LocalContentAlpha provides ContentAlpha.medium) {
             // FIXME workaround of newline code
             val text = monsterItem.description.replace("\\n", "\n")
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 text = text,
-                style = AmbientTextStyle.current.copy(
+                style = LocalTextStyle.current.copy(
                     fontSize = 16.sp,
                     color = MaterialTheme.colors.onBackground
                 )
