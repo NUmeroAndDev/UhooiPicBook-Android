@@ -25,7 +25,7 @@ import com.theuhooi.uhooipicbook.modules.monsterdetail.MonsterDetailScreen
 import com.theuhooi.uhooipicbook.modules.monsterlist.MonsterListScreen
 import com.theuhooi.uhooipicbook.modules.monsterlist.entities.MonsterItem
 import com.theuhooi.uhooipicbook.modules.monsterlist.viewmodels.MonsterListViewModel
-import com.theuhooi.uhooipicbook.util.createTempPngFileUri
+import com.theuhooi.uhooipicbook.extensions.createTempPngFileUri
 import kotlinx.coroutines.launch
 
 @Composable
