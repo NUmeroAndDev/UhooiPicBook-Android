@@ -73,6 +73,7 @@ fun MonsterDetailScreen(
                             Icon(
                                 imageVector = Icons.Filled.ArrowBack,
                                 contentDescription = stringResource(id = R.string.navigate_up_description),
+                                tint = MaterialTheme.colors.onPrimary
                             )
                         }
                     },
@@ -81,6 +82,7 @@ fun MonsterDetailScreen(
                             Icon(
                                 imageVector = Icons.Filled.Share,
                                 contentDescription = stringResource(id = R.string.share_menu_item_title),
+                                tint = MaterialTheme.colors.onPrimary
                             )
                         }
                     }

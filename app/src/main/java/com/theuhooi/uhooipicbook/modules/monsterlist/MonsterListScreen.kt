@@ -101,6 +101,7 @@ fun MonsterListPopupMenuAction(
             Icon(
                 imageVector = Icons.Filled.MoreVert,
                 contentDescription = stringResource(id = R.string.more_action_description),
+                tint = MaterialTheme.colors.onPrimary
             )
         }
         DropdownMenu(
