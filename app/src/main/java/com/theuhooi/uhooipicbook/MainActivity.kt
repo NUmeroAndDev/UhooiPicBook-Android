@@ -1,59 +1,24 @@
 package com.theuhooi.uhooipicbook
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import com.google.android.material.color.MaterialColors
-import com.theuhooi.uhooipicbook.extensions.IntColorInterface
-import com.theuhooi.uhooipicbook.modules.monsterlist.MonsterListFragment
-import com.theuhooi.uhooipicbook.modules.monsterlist.MonsterListFragmentDirections
-import com.theuhooi.uhooipicbook.modules.monsterlist.entities.MonsterItem
+import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), MonsterListFragment.OnListFragmentInteractionListener,
-    IntColorInterface {
+class MainActivity : AppCompatActivity() {
 
     // region View Life-Cycle Methods
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            // TODO fix status bar color
-            UhooiPicBookApp()
-        }
-    }
-
-    // endregion
-
-    // region Other Private Methods
-
-    private fun configureStatusBar() {
-        val navController = findNavController(R.id.nav_host_fragment)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.monster_list_fragment) {
-                this.window.statusBarColor = MaterialColors.getColor(
-                    this,
-                    R.attr.colorPrimaryVariant,
-                    "colorPrimaryVariant is not set in the current theme"
-                )
+            ProvideWindowInsets {
+                UhooiPicBookApp()
             }
-        }
-    }
-
-    // endregion
-
-    // region MonsterListFragment.OnListFragmentInteractionListener
-
-    override fun onListFragmentInteraction(item: MonsterItem) {
-        val action = MonsterListFragmentDirections.actionListToDetail(item)
-        findNavController(R.id.nav_host_fragment).navigate(action)
-
-        if (item.baseColorCode.isNotEmpty()) {
-            val actionBarColor = Color.parseColor(item.baseColorCode)
-            this.window.statusBarColor = actionBarColor.actionBarColorToStatusBarColor
         }
     }
 

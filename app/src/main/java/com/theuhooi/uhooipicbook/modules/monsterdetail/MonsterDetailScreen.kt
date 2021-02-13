@@ -1,9 +1,11 @@
 package com.theuhooi.uhooipicbook.modules.monsterdetail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredSize
@@ -31,8 +33,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.theuhooi.uhooipicbook.R
+import com.theuhooi.uhooipicbook.extensions.actionBarColorToStatusBarColor
 import com.theuhooi.uhooipicbook.modules.monsterlist.entities.MonsterItem
 import dev.chrisbanes.accompanist.coil.CoilImage
+import dev.chrisbanes.accompanist.insets.statusBarsHeight
 
 @Composable
 fun MonsterDetailScreen(
@@ -40,42 +44,57 @@ fun MonsterDetailScreen(
     onBack: () -> Unit,
     onShare: () -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            val bgColor = if (monsterItem.baseColorCode.isEmpty()) {
-                MaterialTheme.colors.primary
-            } else {
-                Color(android.graphics.Color.parseColor(monsterItem.baseColorCode))
-            }
-            TopAppBar(
-                title = { },
-                backgroundColor = bgColor,
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.navigate_up_description),
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onShare) {
-                        Icon(
-                            imageVector = Icons.Filled.Share,
-                            contentDescription = stringResource(id = R.string.share_menu_item_title),
-                        )
-                    }
+    val statusBarColor = if (monsterItem.baseColorCode.isEmpty()) {
+        MaterialTheme.colors.primaryVariant
+    } else {
+        Color(android.graphics.Color.parseColor(monsterItem.baseColorCode).actionBarColorToStatusBarColor)
+    }
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Spacer(
+            modifier = Modifier
+                .background(statusBarColor)
+                .fillMaxWidth()
+                .statusBarsHeight()
+        )
+        Scaffold(
+            topBar = {
+                val appBarColor = if (monsterItem.baseColorCode.isEmpty()) {
+                    MaterialTheme.colors.primary
+                } else {
+                    Color(android.graphics.Color.parseColor(monsterItem.baseColorCode))
                 }
-            )
-        },
-        bodyContent = { innerPadding ->
-            val modifier = Modifier.padding(innerPadding)
-            MonsterDetailContent(
-                modifier = modifier,
-                monsterItem = monsterItem
-            )
-        }
-    )
+                TopAppBar(
+                    title = { },
+                    backgroundColor = appBarColor,
+                    navigationIcon = {
+                        IconButton(onClick = onBack) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = stringResource(id = R.string.navigate_up_description),
+                            )
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = onShare) {
+                            Icon(
+                                imageVector = Icons.Filled.Share,
+                                contentDescription = stringResource(id = R.string.share_menu_item_title),
+                            )
+                        }
+                    }
+                )
+            },
+            bodyContent = { innerPadding ->
+                val modifier = Modifier.padding(innerPadding)
+                MonsterDetailContent(
+                    modifier = modifier,
+                    monsterItem = monsterItem
+                )
+            }
+        )
+    }
 }
 
 @Composable

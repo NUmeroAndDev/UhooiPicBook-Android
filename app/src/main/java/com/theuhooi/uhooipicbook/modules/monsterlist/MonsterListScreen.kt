@@ -1,10 +1,13 @@
 package com.theuhooi.uhooipicbook.modules.monsterlist
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
@@ -41,6 +44,7 @@ import com.theuhooi.uhooipicbook.R
 import com.theuhooi.uhooipicbook.modules.monsterlist.entities.MonsterItem
 import com.theuhooi.uhooipicbook.modules.monsterlist.viewmodels.MonsterListViewModel
 import dev.chrisbanes.accompanist.coil.CoilImage
+import dev.chrisbanes.accompanist.insets.statusBarsHeight
 
 @Composable
 fun MonsterListScreen(
@@ -49,27 +53,37 @@ fun MonsterListScreen(
     onNavigateLicenses: () -> Unit
 ) {
     val monsterItemList by viewModel.monsters.observeAsState(emptyList())
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { },
-                backgroundColor = MaterialTheme.colors.primary,
-                actions = {
-                    MonsterListPopupMenuAction(
-                        onClickLicensesItem = onNavigateLicenses
-                    )
-                }
-            )
-        },
-        bodyContent = { innerPadding ->
-            val modifier = Modifier.padding(innerPadding)
-            MonsterListContent(
-                modifier = modifier,
-                monsterItemList = monsterItemList,
-                onClickItem = onClickItem
-            )
-        }
-    )
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Spacer(
+            modifier = Modifier
+                .background(MaterialTheme.colors.primaryVariant)
+                .fillMaxWidth()
+                .statusBarsHeight()
+        )
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { },
+                    backgroundColor = MaterialTheme.colors.primary,
+                    actions = {
+                        MonsterListPopupMenuAction(
+                            onClickLicensesItem = onNavigateLicenses
+                        )
+                    }
+                )
+            },
+            bodyContent = { innerPadding ->
+                val modifier = Modifier.padding(innerPadding)
+                MonsterListContent(
+                    modifier = modifier,
+                    monsterItemList = monsterItemList,
+                    onClickItem = onClickItem
+                )
+            }
+        )
+    }
 }
 
 
