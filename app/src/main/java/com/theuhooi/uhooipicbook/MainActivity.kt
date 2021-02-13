@@ -2,6 +2,7 @@ package com.theuhooi.uhooipicbook
 
 import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.google.android.material.color.MaterialColors
@@ -19,9 +20,10 @@ class MainActivity : AppCompatActivity(), MonsterListFragment.OnListFragmentInte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_main)
-        configureStatusBar()
+        setContent {
+            // TODO fix status bar color
+            UhooiPicBookApp()
+        }
     }
 
     // endregion

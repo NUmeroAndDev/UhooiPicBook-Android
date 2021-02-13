@@ -14,7 +14,7 @@ import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
 
 @HiltAndroidApp
-class UhooiPicBookApp : Application() {
+class UhooiPicBookApplication : Application() {
 
     // region View Life-Cycle Methods
 
