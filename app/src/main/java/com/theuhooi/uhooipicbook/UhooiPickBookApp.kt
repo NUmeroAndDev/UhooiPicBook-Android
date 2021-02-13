@@ -4,7 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.core.app.ShareCompat
 import androidx.hilt.navigation.HiltViewModelFactory
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.activity
@@ -14,12 +17,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
+import coil.ImageLoader
+import coil.request.ImageRequest
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.theuhooi.uhooipicbook.modules.monsterdetail.MonsterDetailScreen
 import com.theuhooi.uhooipicbook.modules.monsterlist.MonsterListScreen
 import com.theuhooi.uhooipicbook.modules.monsterlist.entities.MonsterItem
 import com.theuhooi.uhooipicbook.modules.monsterlist.viewmodels.MonsterListViewModel
+import com.theuhooi.uhooipicbook.util.createTempPngFileUri
+import kotlinx.coroutines.launch
 
 @Composable
 fun UhooiPicBookApp() {
@@ -77,13 +84,28 @@ fun UhooiPicBookApp() {
                     dancingUrlString = checkNotNull(it.arguments?.getString(Screen.MonsterDetail.Argument.DancingUrl.key)),
                     order = checkNotNull(it.arguments?.getInt(Screen.MonsterDetail.Argument.Order.key)),
                 )
+                val context = LocalContext.current
+                val lifecycleOwner = LocalLifecycleOwner.current
                 MonsterDetailScreen(
                     monsterItem = monsterItem,
                     onBack = {
                         navController.popBackStack()
                     },
                     onShare = {
-                        // TODO
+                        val request = ImageRequest.Builder(context)
+                            .data(monsterItem.iconUrlString)
+                            .target { drawable ->
+                                ShareCompat.IntentBuilder(context)
+                                    .setText(monsterItem.name + "\n" + monsterItem.unescapedDescription + "\n#UhooiPicBook")
+                                    .setStream(context.createTempPngFileUri(drawable))
+                                    .setType("image/png")
+                                    .setChooserTitle(R.string.share_menu_item_title)
+                                    .startChooser()
+                            }
+                            .build()
+                        lifecycleOwner.lifecycleScope.launch {
+                            ImageLoader(context).execute(request)
+                        }
                     }
                 )
             }

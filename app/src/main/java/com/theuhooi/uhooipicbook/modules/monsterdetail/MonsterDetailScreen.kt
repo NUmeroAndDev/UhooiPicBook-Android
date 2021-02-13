@@ -176,8 +176,7 @@ fun MonsterDetail(
         )
         Spacer(modifier = Modifier.preferredHeight(64.dp))
         Providers(LocalContentAlpha provides ContentAlpha.medium) {
-            // FIXME workaround of newline code
-            val text = monsterItem.description.replace("\\n", "\n")
+            val text = monsterItem.unescapedDescription
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 text = text,

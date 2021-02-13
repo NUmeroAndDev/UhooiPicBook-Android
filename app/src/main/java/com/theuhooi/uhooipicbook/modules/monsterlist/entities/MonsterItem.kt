@@ -18,4 +18,7 @@ data class MonsterItem(
     @set:PropertyName("dancing_url")
     var dancingUrlString: String = "",
     val order: Int = 0
-) : Parcelable
+) : Parcelable {
+    val unescapedDescription: String
+        get() = description.replace("\\n", "\n")
+}
