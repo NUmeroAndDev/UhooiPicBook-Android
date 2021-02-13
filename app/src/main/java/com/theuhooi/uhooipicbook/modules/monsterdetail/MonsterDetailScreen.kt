@@ -1,9 +1,11 @@
 package com.theuhooi.uhooipicbook.modules.monsterdetail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,9 +23,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +39,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.theuhooi.uhooipicbook.R
 import com.theuhooi.uhooipicbook.extensions.actionBarColorToStatusBarColor
 import com.theuhooi.uhooipicbook.modules.monsterlist.entities.MonsterItem
@@ -44,6 +53,7 @@ fun MonsterDetailScreen(
     onBack: () -> Unit,
     onShare: () -> Unit,
 ) {
+    var isShowPreview by remember { mutableStateOf(false) }
     val statusBarColor = if (monsterItem.baseColorCode.isEmpty()) {
         MaterialTheme.colors.primaryVariant
     } else {
@@ -92,8 +102,19 @@ fun MonsterDetailScreen(
                 val modifier = Modifier.padding(innerPadding)
                 MonsterDetailContent(
                     modifier = modifier,
-                    monsterItem = monsterItem
+                    monsterItem = monsterItem,
+                    onPreview = {
+                        isShowPreview = true
+                    }
                 )
+                if (isShowPreview) {
+                    DancingMonsterPreviewDialog(
+                        monsterItem = monsterItem,
+                        onDismissRequest = {
+                            isShowPreview = false
+                        }
+                    )
+                }
             }
         )
     }
@@ -103,12 +124,16 @@ fun MonsterDetailScreen(
 fun MonsterDetailContent(
     modifier: Modifier = Modifier,
     monsterItem: MonsterItem,
+    onPreview: () -> Unit,
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.TopCenter
     ) {
-        MonsterDetail(monsterItem = monsterItem)
+        MonsterDetail(
+            monsterItem = monsterItem,
+            onPreview = onPreview
+        )
     }
 }
 
@@ -116,6 +141,7 @@ fun MonsterDetailContent(
 fun MonsterDetail(
     modifier: Modifier = Modifier,
     monsterItem: MonsterItem,
+    onPreview: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -133,6 +159,7 @@ fun MonsterDetail(
         CoilImage(
             modifier = Modifier
                 .preferredSize(48.dp)
+                .clickable(onClick = onPreview)
                 .align(Alignment.End),
             data = monsterItem.dancingUrlString,
             contentDescription = null
@@ -163,6 +190,54 @@ fun MonsterDetail(
     }
 }
 
+@Composable
+fun DancingMonsterPreviewDialog(
+    monsterItem: MonsterItem,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(dismissOnClickOutside = false)
+    ) {
+        DancingMonsterPreviewContent(
+            monsterItem = monsterItem,
+            onClose = onDismissRequest,
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+fun DancingMonsterPreviewContent(
+    monsterItem: MonsterItem,
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+    ) {
+        IconButton(
+            modifier = Modifier.align(alignment = Alignment.TopEnd),
+            onClick = onClose
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Close,
+                contentDescription = stringResource(id = R.string.close_preview_description),
+                tint = Color.White
+            )
+        }
+        CoilImage(
+            modifier = Modifier
+                .fillMaxWidth(0.6f)
+                .aspectRatio(1f)
+                .align(alignment = Alignment.Center),
+            data = monsterItem.dancingUrlString,
+            contentDescription = null
+        )
+    }
+}
+
 @Preview
 @Composable
 fun PreviewMonsterDetail() {
@@ -171,6 +246,21 @@ fun PreviewMonsterDetail() {
             name = "uhooi",
             iconUrlString = "https://placehold.jp/150x150.png",
             description = "description"
-        )
+        ),
+        onPreview = {}
+    )
+}
+
+@Preview
+@Composable
+fun PreviewDancingMonsterPreviewContent() {
+    DancingMonsterPreviewContent(
+        monsterItem = MonsterItem(
+            name = "uhooi",
+            iconUrlString = "https://placehold.jp/150x150.png",
+            dancingUrlString = "https://placehold.jp/150x150.png",
+            description = "description"
+        ),
+        onClose = {}
     )
 }
