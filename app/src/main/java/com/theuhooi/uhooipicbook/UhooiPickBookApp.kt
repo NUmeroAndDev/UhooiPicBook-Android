@@ -33,9 +33,9 @@ fun UhooiPicBookApp() {
     val navController = rememberNavController()
 
     MdcTheme {
-        NavHost(navController = navController, startDestination = Screen.MonsterList.guide) {
+        NavHost(navController = navController, startDestination = Screen.MonsterList.path) {
             composable(
-                route = Screen.MonsterList.guide
+                route = Screen.MonsterList.path
             ) {
                 val context = LocalContext.current
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -54,7 +54,7 @@ fun UhooiPicBookApp() {
                 )
             }
             composable(
-                route = Screen.MonsterDetail.guide,
+                route = Screen.MonsterDetail.path,
                 arguments = listOf(
                     navArgument(Screen.MonsterDetail.Argument.Name.key) {
                         type = NavType.StringType
