@@ -2,7 +2,7 @@ package com.theuhooi.uhooipicbook.modules.monsterlist.entities
 
 import android.os.Parcelable
 import com.google.firebase.firestore.PropertyName
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MonsterItem(
@@ -18,4 +18,7 @@ data class MonsterItem(
     @set:PropertyName("dancing_url")
     var dancingUrlString: String = "",
     val order: Int = 0
-) : Parcelable
+) : Parcelable {
+    val unescapedDescription: String
+        get() = description.replace("\\n", "\n")
+}

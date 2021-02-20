@@ -38,7 +38,7 @@ You can develop UhooiPicBook-Android.
 
 ### Environment
 
-- Android Studio: 4.1.2
+- Android Studio Arctic Fox | 2020.3.1 Canary 7
 
 ### Configuration
 

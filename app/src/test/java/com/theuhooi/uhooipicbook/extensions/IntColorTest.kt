@@ -12,7 +12,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [Build.VERSION_CODES.P])
-class IntColorTest : IntColorInterface {
+class IntColorTest {
 
     // region TestCase Life-Cycle Methods
 

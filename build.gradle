@@ -2,9 +2,9 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.4.10'
-        nav_version = '2.3.0'
-        hilt_version = '2.31-alpha'
+        kotlin_version = '1.4.30'
+        compose_version = '1.0.0-alpha12'
+        hilt_version = '2.31.2-alpha'
         detekt_version = '1.7.4'
     }
     repositories {
@@ -12,9 +12,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha07'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
         // Firebase
         classpath 'com.google.gms:google-services:4.3.4'
